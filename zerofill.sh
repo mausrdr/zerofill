@@ -1,7 +1,7 @@
 #!/bin/bash
 #
 # Criado por Mauro Augusto Soares Rodrigues
-# em 01/02/2024 v1.0
+# em 01/02/2024 v2
 #
 # Script para limpeza de disco utilizando o
 # metodo Zero Fill
@@ -31,25 +31,25 @@ function zero_fill() {
     read -p "Deseja continuar [s/N]?: " -n 1
 
     if [[ "${REPLY:=N}" != "${REPLY#[Ss]}" ]]; then
-      echo -e "\nIniciando a limpeza zero fill da unidade de armazenamento /dev/${1}..."
+      echo -e "\nIniciando a limpeza zero fill da unidade de armazenamento /dev/${2}..."
       sleep 5
-      echo -e "Voce acabou se selecionar a unidade de armazenamento /dev/${1}. Isto esta correto?\nCaso responda afirmativamente, ESTEJA CIENTE QUE, A PARTIR DESTE MOMENTO, ESSA ACAO NAO TEM MAIS VOLTA!\n"
+      echo -e "Voce acabou se selecionar a unidade de armazenamento /dev/${2}. Isto esta correto?\nCaso responda afirmativamente, ESTEJA CIENTE QUE, A PARTIR DESTE MOMENTO, ESSA ACAO NAO TEM MAIS VOLTA!\n"
       read -p "Deseja continuar [s/N]?: " -n 1
       if [[ "${REPLY:=N}" != "${REPLY#[Ss]}" ]]; then
-        echo -e "\nLimpeza zero fill da unidade de armazenamento /dev/${1} iniciada..."
-        sudo dd if=/dev/zero of=/dev/${1} status=progress bs=1M
+        echo -e "\nLimpeza zero fill da unidade de armazenamento /dev/${2} iniciada..."
+        sudo dd if=/dev/zero of=/dev/${2} status=progress bs=1M
         return 0
       else
-        echo -e "\nAbortando limpeza da unidade de armazenamento /dev/${1}."
+        echo -e "\nAbortando limpeza da unidade de armazenamento /dev/${2}."
         return 1
       fi
     else
-      echo -e "\nAbortando limpeza da unidade de armazenamento /dev/${1}."
+      echo -e "\nAbortando limpeza da unidade de armazenamento /dev/${2}."
       return 1
     fi
   else
-    echo -e "\nLimpeza zero fill da unidade de armazenamento /dev/${1} iniciada..."
-    sudo dd if=/dev/zero of=/dev/${1} status=progress bs=1M
+    echo -e "\nLimpeza zero fill da unidade de armazenamento /dev/${2} iniciada..."
+    sudo dd if=/dev/zero of=/dev/${2} status=progress bs=1M
     return 0
   fi
 }
@@ -62,25 +62,25 @@ function urandom_fill() {
     read -p "Deseja continuar [s/N]?: " -n 1
 
     if [[ "${REPLY:=N}" != "${REPLY#[Ss]}" ]]; then
-      echo -e "\nIniciando a limpeza urandom fill da unidade de armazenamento /dev/${1}..."
+      echo -e "\nIniciando a limpeza urandom fill da unidade de armazenamento /dev/${2}..."
       sleep 5
-      echo -e "Voce acabou se selecionar a unidade de armazenamento /dev/${1}. Isto esta correto?\nCaso responda afirmativamente, ESTEJA CIENTE QUE, A PARTIR DESTE MOMENTO, ESSA ACAO NAO TEM MAIS VOLTA!\n"
+      echo -e "Voce acabou se selecionar a unidade de armazenamento /dev/${2}. Isto esta correto?\nCaso responda afirmativamente, ESTEJA CIENTE QUE, A PARTIR DESTE MOMENTO, ESSA ACAO NAO TEM MAIS VOLTA!\n"
       read -p "Deseja continuar [s/N]?: " -n 1
       if [[ "${REPLY:=N}" != "${REPLY#[Ss]}" ]]; then
-        echo -e "\nLimpeza urandom fill da unidade de armazenamento /dev/${1} iniciada..."
-        sudo dd if=/dev/urandom of=/dev/${1} status=progress
+        echo -e "\nLimpeza urandom fill da unidade de armazenamento /dev/${2} iniciada..."
+        sudo dd if=/dev/urandom of=/dev/${2} status=progress
         return 0
       else
-        echo -e "\nAbortando limpeza da unidade de armazenamento /dev/${1}."
+        echo -e "\nAbortando limpeza da unidade de armazenamento /dev/${2}."
         return 1
       fi
     else
-      echo -e "\nAbortando limpeza da unidade de armazenamento /dev/${1}."
+      echo -e "\nAbortando limpeza da unidade de armazenamento /dev/${2}."
       return 1
     fi
   else
-    echo -e "\nLimpeza urandom fill da unidade de armazenamento /dev/${1} iniciada..."
-    sudo dd if=/dev/urandom of=/dev/${1} status=progress
+    echo -e "\nLimpeza urandom fill da unidade de armazenamento /dev/${2} iniciada..."
+    sudo dd if=/dev/urandom of=/dev/${2} status=progress
     return 0
   fi
 }
@@ -95,7 +95,7 @@ while [[ true ]]; do
   read -p "Digite sua opcao [1-5]: " -n 1
   case $REPLY in
     1)
-      zero_fill 1
+      zero_fill 1 $1
       if [[ $? -eq 0 ]]; then
         echo "Zero fill completado!"
         echo "Caso nao seja mais necessario nenhuma outra execucao de limpeza,"
@@ -106,13 +106,13 @@ while [[ true ]]; do
       fi
     ;;
     2)
-      urandom_fill 1
+      urandom_fill 1 $1
       if [[ $? -eq 0 ]]; then
         echo "Urandom fill completado!"
       else
         echo "Urandom fill abortado pelo usuario"
       fi
-      zero_fill 0
+      zero_fill 0 $1
       if [[ $? -eq 0 ]]; then
         echo "Zero fill completado"
         echo "Caso nao seja mais necessario nenhuma outra execucao de limpeza,"
@@ -123,19 +123,19 @@ while [[ true ]]; do
       fi
     ;;
     3)
-      urandom_fill 1
+      urandom_fill 1 $1
       if [[ $? -eq 0 ]]; then
         echo "Urandom fill completado!"
       else
         echo "Urandom fill abortado pelo usuario"
       fi
-      urandom_fill 0
+      urandom_fill 0 $1
       if [[ $? -eq 0 ]]; then
         echo "Urandom fill completado!"
       else
         echo "Urandom fill abortado pelo usuario"
       fi
-      zero_fill 0
+      zero_fill 0 $1
       if [[ $? -eq 0 ]]; then
         echo "Zero fill completado"
         echo "Caso nao seja mais necessario nenhuma outra execucao de limpeza,"
@@ -146,25 +146,25 @@ while [[ true ]]; do
       fi
     ;;
     4)
-      urandom_fill 1
+      urandom_fill 1 $1
       if [[ $? -eq 0 ]]; then
         echo "Urandom fill completado!"
       else
         echo "Urandom fill abortado pelo usuario"
       fi
-      urandom_fill 0
+      urandom_fill 0 $1
       if [[ $? -eq 0 ]]; then
         echo "Urandom fill completado!"
       else
         echo "Urandom fill abortado pelo usuario"
       fi
-      zero_fill 0
+      zero_fill 0 $1
       if [[ $? -eq 0 ]]; then
         echo "Zero fill completado"
       else
         echo "Zero fill abortado pelo usuario"
       fi
-      zero_fill 0
+      zero_fill 0 $1
       if [[ $? -eq 0 ]]; then
         echo "Zero fill completado"
         echo "Caso nao seja mais necessario nenhuma outra execucao de limpeza,"
