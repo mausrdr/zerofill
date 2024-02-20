@@ -33,7 +33,7 @@ function zero_fill() {
     if [[ "${REPLY:=N}" != "${REPLY#[Ss]}" ]]; then
       echo -e "\nIniciando a limpeza zero fill da unidade de armazenamento /dev/${2}..."
       sleep 5
-      echo -e "Voce informou a unidade de armazenamento /dev/${2}. Isto esta correto?\nCaso responda afirmativamente, ESTEJA CIENTE QUE, A PARTIR DESTE MOMENTO, ESSA ACAO NAO TEM MAIS VOLTA!\n"
+      echo -e "\nVoce informou a unidade de armazenamento /dev/${2}. Isto esta correto?\nCaso responda afirmativamente, ESTEJA CIENTE QUE, A PARTIR DESTE MOMENTO, ESSA ACAO NAO TEM MAIS VOLTA!\n"
       read -p "Deseja continuar [s/N]?: " -n 1
       if [[ "${REPLY:=N}" != "${REPLY#[Ss]}" ]]; then
         echo -e "\nLimpeza zero fill da unidade de armazenamento /dev/${2} iniciada..."
@@ -64,7 +64,7 @@ function urandom_fill() {
     if [[ "${REPLY:=N}" != "${REPLY#[Ss]}" ]]; then
       echo -e "\nIniciando a limpeza urandom fill da unidade de armazenamento /dev/${2}..."
       sleep 5
-      echo -e "Voce informou a unidade de armazenamento /dev/${2}. Isto esta correto?\nCaso responda afirmativamente, ESTEJA CIENTE QUE, A PARTIR DESTE MOMENTO, ESSA ACAO NAO TEM MAIS VOLTA!\n"
+      echo -e "\nVoce informou a unidade de armazenamento /dev/${2}. Isto esta correto?\nCaso responda afirmativamente, ESTEJA CIENTE QUE, A PARTIR DESTE MOMENTO, ESSA ACAO NAO TEM MAIS VOLTA!\n"
       read -p "Deseja continuar [s/N]?: " -n 1
       if [[ "${REPLY:=N}" != "${REPLY#[Ss]}" ]]; then
         echo -e "\nLimpeza urandom fill da unidade de armazenamento /dev/${2} iniciada..."
